@@ -1,0 +1,56 @@
+{
+    "connection_key": "request",
+    "result": true,
+    "redis_key": "abcdefg",
+    "filepath": "/var/lib/aion/Data/rededge_sdc/abcdef.json",
+    "api_status_code": 200,
+    "runtime_session_id": "boi9ar543dg91ipdnspi099u231280ab0v8af0ew",
+    "business_partner": 101,
+    "service_label": "SUPPLY_CHAIN_RELATIONSHIP",
+    "api_type": "reads",
+    "message": {
+        "General": null,
+        "Transaction": null,
+        "DeliveryRelation": null,
+        "BillingRelation": [
+            {
+                "SupplyChainRelationshipID": 100000000,
+                "SupplyChainRelationshipBillingID": 120000000,
+                "Buyer": 101,
+                "Seller": 201,
+                "BillToParty": 101,
+                "BillFromParty": 201,
+                "DefaultRelation": true,
+                "BillToCountry": "JP",
+                "BillFromCountry": "JP",
+                "IsExportImport": false,
+                "TransactionTaxCategory": "MWST",
+                "TransactionTaxClassification": "1",
+                "CreationDate": "2023-05-23",
+                "LastChangeDate": "2023-05-23",
+                "IsMarkedForDeletion": false
+            }
+        ],
+        "PaymentRelation": null,
+        "DeliveryPlantRelation": null,
+        "DeliveryPlantRelationProduct": null,
+        "DeliveryPlantRelationProductMRPArea": null,
+        "StockConfPlantRelation": null,
+        "StockConfPlantRelationProduct": null,
+        "ProductionPlantRelation": null,
+        "ProductionPlantRelationProductMRP": null
+    },
+    "api_schema": "DPFMSupplyChainRelationshipReads",
+    "accepter": [
+        "BillingRelation"
+    ],
+    "deleted": false,
+    "sql_update_result": null,
+    "sql_update_error": "",
+    "subfunc_result": null,
+    "subfunc_error": "",
+    "exconf_result": null,
+    "exconf_error": "",
+    "api_processing_result": true,
+    "api_processing_error": ""
+}

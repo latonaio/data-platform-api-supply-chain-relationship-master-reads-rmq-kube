@@ -1,0 +1,272 @@
+{
+    "connection_key": "request",
+    "result": true,
+    "redis_key": "abcdefg",
+    "filepath": "/var/lib/aion/Data/rededge_sdc/abcdef.json",
+    "api_status_code": 200,
+    "runtime_session_id": "boi9ar543dg91ipdnspi099u231280ab0v8af0ew",
+    "business_partner": 101,
+    "service_label": "SUPPLY_CHAIN_RELATIONSHIP",
+    "api_type": "reads",
+    "message": {
+        "General": [
+            {
+                "SupplyChainRelationshipID": 100000000,
+                "Buyer": 101,
+                "Seller": 201,
+                "CreationDate": "2023-05-23",
+                "LastChangeDate": "2023-05-23",
+                "IsMarkedForDeletion": false
+            }
+        ],
+        "Transaction": [
+            {
+                "SupplyChainRelationshipID": 100000000,
+                "Buyer": 101,
+                "Seller": 201,
+                "TransactionCurrency": "JPY",
+                "PaymentTerms": "0001",
+                "PaymentMethod": "T",
+                "Incoterms": "CIF",
+                "AccountAssignmentGroup": "01",
+                "CreationDate": "2023-05-23",
+                "LastChangeDate": "2023-05-23",
+                "QuotationIsBlocked": false,
+                "OrderIsBlocked": false,
+                "DeliveryIsBlocked": false,
+                "BillingIsBlocked": false,
+                "IsMarkedForDeletion": false
+            }
+        ],
+        "DeliveryRelation": [
+            {
+                "SupplyChainRelationshipID": 100000000,
+                "SupplyChainRelationshipDeliveryID": 110000000,
+                "Buyer": 101,
+                "Seller": 201,
+                "DeliverToParty": 101,
+                "DeliverFromParty": 201,
+                "DefaultRelation": true,
+                "CreationDate": "2023-05-23",
+                "LastChangeDate": "2023-05-23",
+                "IsMarkedForDeletion": false
+            }
+        ],
+        "BillingRelation": [
+            {
+                "SupplyChainRelationshipID": 100000000,
+                "SupplyChainRelationshipBillingID": 120000000,
+                "Buyer": 101,
+                "Seller": 201,
+                "BillToParty": 101,
+                "BillFromParty": 201,
+                "DefaultRelation": true,
+                "BillToCountry": "JP",
+                "BillFromCountry": "JP",
+                "IsExportImport": false,
+                "TransactionTaxCategory": "MWST",
+                "TransactionTaxClassification": "1",
+                "CreationDate": "2023-05-23",
+                "LastChangeDate": "2023-05-23",
+                "IsMarkedForDeletion": false
+            }
+        ],
+        "PaymentRelation": [
+            {
+                "SupplyChainRelationshipID": 100000000,
+                "SupplyChainRelationshipBillingID": 120000000,
+                "SupplyChainRelationshipPaymentID": 130000000,
+                "Buyer": 101,
+                "Seller": 201,
+                "BillToParty": 101,
+                "BillFromParty": 201,
+                "Payer": 101,
+                "Payee": 201,
+                "DefaultRelation": true,
+                "PayerHouseBank": null,
+                "PayerHouseBankAccount": null,
+                "PayeeHouseBank": null,
+                "PayeeHouseBankAccount": null,
+                "CreationDate": "2023-05-23",
+                "LastChangeDate": "2023-05-23",
+                "IsMarkedForDeletion": false
+            }
+        ],
+        "DeliveryPlantRelation": [
+            {
+                "SupplyChainRelationshipID": 100000000,
+                "SupplyChainRelationshipDeliveryID": 110000000,
+                "SupplyChainRelationshipDeliveryPlantID": 120000000,
+                "Buyer": 101,
+                "Seller": 201,
+                "DeliverToParty": 101,
+                "DeliverFromParty": 201,
+                "DeliverToPlant": "AB01",
+                "DeliverFromPlant": "TE01",
+                "DefaultRelation": true,
+                "MRPType": null,
+                "MRPController": null,
+                "CreationDate": "2023-05-23",
+                "LastChangeDate": "2023-05-23",
+                "IsMarkedForDeletion": false
+            }
+        ],
+        "DeliveryPlantRelationProduct": [
+            {
+                "SupplyChainRelationshipID": 100000000,
+                "SupplyChainRelationshipDeliveryID": 110000000,
+                "SupplyChainRelationshipDeliveryPlantID": 120000000,
+                "Buyer": 101,
+                "Seller": 201,
+                "DeliverToParty": 101,
+                "DeliverFromToParty": 201,
+                "DeliverToPlant": "AB01",
+                "DeliverFromPlant": "TE01",
+                "Product": "A3750",
+                "DeliverToPlantStorageLocation": "0001",
+                "DeliverFromPlantStorageLocation": "0002",
+                "DeliveryUnit": "PC",
+                "QuantityPerPackage": 0,
+                "MRPType": null,
+                "MRPController": null,
+                "ReorderThresholdQuantity": null,
+                "PlanningTimeFence": null,
+                "MRPPlanningCalendar": null,
+                "SafetyStockQuantityInBaseUnit": null,
+                "SafetyDuration": null,
+                "MaximumStockQuantityInBaseUnit": null,
+                "MinimumDeliveryQuantityInBaseUnit": null,
+                "MinimumDeliveryLotSizeQuantityInBaseUnit": null,
+                "StandardDeliveryLotSizeQuantityInBaseUnit": null,
+                "DeliveryLotSizeRoundingQuantityInBaseUnit": null,
+                "MaximumDeliveryLotSizeQuantityInBaseUnit": null,
+                "MaximumDeliveryQuantityInBaseUnit": null,
+                "DeliveryLotSizeIsFixed": null,
+                "StandardDeliveryDurationInDays": null,
+                "IsAutoOrderCreationAllowed": true,
+                "IsOrderAcknowledgementRequired": true,
+                "CreationDate": "2023-05-23",
+                "LastChangeDate": "2023-05-23",
+                "IsMarkedForDeletion": false
+            }
+        ],
+        "DeliveryPlantRelationProductMRPArea": [
+            {
+                "SupplyChainRelationshipID": 100000000,
+                "SupplyChainRelationshipDeliveryID": 110000000,
+                "SupplyChainRelationshipDeliveryPlantID": 120000000,
+                "Buyer": 101,
+                "Seller": 201,
+                "DeliverToParty": 101,
+                "DeliverFromParty": 201,
+                "DeliverToPlant": "AB01",
+                "DeliverFromPlant": "TE01",
+                "Product": "A3750",
+                "DeliverToPlantStorageLocation": "0001",
+                "DeliverFromPlantStorageLocation": "0002",
+                "DeliveryUnit": "PC",
+                "QuantityPerPackage": null,
+                "MRPType": null,
+                "MRPArea": "PL1",
+                "MRPController": null,
+                "ReorderThresholdQuantity": null,
+                "PlanningTimeFence": null,
+                "MRPPlanningCalendar": null,
+                "SafetyStockQuantityInBaseUnit": null,
+                "SafetyDuration": null,
+                "MaximumStockQuantityInBaseUnit": null,
+                "MinimumDeliveryQuantityInBaseUnit": null,
+                "MinimumDeliveryLotSizeQuantityInBaseUnit": null,
+                "StandardDeliveryLotSizeQuantityInBaseUnit": null,
+                "DeliveryLotSizeRoundingQuantityInBaseUnit": null,
+                "MaximumDeliveryLotSizeQuantityInBaseUnit": null,
+                "MaximumDeliveryQuantityInBaseUnit": null,
+                "DeliveryLotSizeIsFixed": null,
+                "StandardDeliveryDurationInDays": null,
+                "IsAutoOrderCreationAllowed": true,
+                "IsOrderAcknowledgementRequired": true,
+                "CreationDate": "2023-05-23",
+                "LastChangeDate": "2023-05-23",
+                "IsMarkedForDeletion": false
+            }
+        ],
+        "StockConfPlantRelation": [
+            {
+                "SupplyChainRelationshipID": 100000000,
+                "SupplyChainRelationshipStockConfPlantID": 170000000,
+                "Buyer": 101,
+                "Seller": 201,
+                "StockConfirmationBusinessPartner": 101,
+                "StockConfirmationPlant": "AB01",
+                "DefaultRelation": true,
+                "MRPType": null,
+                "MRPController": null,
+                "CreationDate": "2023-05-23",
+                "LastChangeDate": "2023-05-23",
+                "IsMarkedForDeletion": false
+            }
+        ],
+        "StockConfPlantRelationProduct": [
+            {
+                "SupplyChainRelationshipID": 100000000,
+                "SupplyChainRelationshipStockConfPlantID": 170000000,
+                "Buyer": 101,
+                "Seller": 201,
+                "StockConfirmationBusinessPartner": 101,
+                "StockConfirmationPlant": "AB01",
+                "Product": "A3750",
+                "MRPType": null,
+                "MRPController": null,
+                "CreationDate": "2023-05-23",
+                "LastChangeDate": "2023-05-23",
+                "IsMarkedForDeletion": false
+            }
+        ],
+        "ProductionPlantRelation": [
+            {
+                "SupplyChainRelationshipID": 100000000,
+                "SupplyChainRelationshipProductionPlantID": 180000000,
+                "Buyer": 101,
+                "Seller": 201,
+                "ProductionPlantBusinessPartner": 201,
+                "ProductionPlant": "TE01",
+                "DefaultRelation": true,
+                "MRPType": null,
+                "MRPController": null,
+                "CreationDate": "2023-05-23",
+                "LastChangeDate": "2023-05-23",
+                "IsMarkedForDeletion": false
+            }
+        ],
+        "ProductionPlantRelationProductMRP": [
+            {
+                "SupplyChainRelationshipID": 100000000,
+                "SupplyChainRelationshipProductionPlantID": 180000000,
+                "Buyer": 101,
+                "Seller": 201,
+                "ProductionPlantBusinessPartner": 201,
+                "ProductionPlant": "TE01",
+                "Product": "A3750",
+                "ProductionPlantStorageLocation": "0002",
+                "MRPType": null,
+                "MRPController": null,
+                "CreationDate": "2023-05-23",
+                "LastChangeDate": "2023-05-23",
+                "IsMarkedForDeletion": false
+            }
+        ]
+    },
+    "api_schema": "DPFMSupplyChainRelationshipReads",
+    "accepter": [
+        "All"
+    ],
+    "deleted": false,
+    "sql_update_result": null,
+    "sql_update_error": "",
+    "subfunc_result": null,
+    "subfunc_error": "",
+    "exconf_result": null,
+    "exconf_error": "",
+    "api_processing_result": true,
+    "api_processing_error": ""
+}

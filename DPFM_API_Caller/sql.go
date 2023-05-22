@@ -66,6 +66,10 @@ func (c *DPFMAPICaller) readSqlProcess(
 			func() {
 				deliveryPlantRelation = c.DeliveryPlantRelation(mtx, input, output, errs, log)
 			}()
+		case "DeliveryPlantRelations":
+			func() {
+				deliveryPlantRelation = c.DeliveryPlantRelations(mtx, input, output, errs, log)
+			}()
 		case "DeliveryPlantRelationProduct":
 			func() {
 				deliveryPlantRelationProduct = c.DeliveryPlantRelationProduct(mtx, input, output, errs, log)
@@ -394,6 +398,37 @@ func (c *DPFMAPICaller) DeliveryPlantRelation(
 		`SELECT *
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_supply_chain_relationship_delivery_plant_rel_data
 		WHERE (SupplyChainRelationshipID, SupplyChainRelationshipDeliveryID, SupplyChainRelationshipDeliveryPlantID, Buyer, Seller, DeliverToParty, DeliverFromParty, DeliverToPlant, DeliverFromPlant) IN ( `+repeat+` );`, args...,
+	)
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+	defer rows.Close()
+
+	data, err := dpfm_api_output_formatter.ConvertToDeliveryPlantRelation(rows)
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+
+	return data
+}
+
+func (c *DPFMAPICaller) DeliveryPlantRelations(
+	mtx *sync.Mutex,
+	input *dpfm_api_input_reader.SDC,
+	output *dpfm_api_output_formatter.SDC,
+	errs *[]error,
+	log *logger.Logger,
+) *[]dpfm_api_output_formatter.DeliveryPlantRelation {
+	where := " WHERE 1 != 1"
+	for _, v := range input.General.DeliveryRelation[0].DeliveryPlantRelation {
+		where = fmt.Sprintf("%s OR SupplyChainRelationshipID = %d ", where, v.SupplyChainRelationshipID)
+	}
+	rows, err := c.db.Query(
+		`SELECT *
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_supply_chain_relationship_delivery_plant_rel_data
+		` + where + `;`,
 	)
 	if err != nil {
 		*errs = append(*errs, err)

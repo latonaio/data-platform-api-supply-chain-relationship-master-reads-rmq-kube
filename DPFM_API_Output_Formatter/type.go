@@ -157,6 +157,7 @@ type DeliveryPlantRelationProduct struct {
 	MRPPlanningCalendar                       *string  `json:"MRPPlanningCalendar"`
 	SafetyStockQuantityInBaseUnit             *float32 `json:"SafetyStockQuantityInBaseUnit"`
 	SafetyDuration                            *int     `json:"SafetyDuration"`
+	SafetyDurationUnit                        *string  `json:"SafetyDurationUnit"`
 	MaximumStockQuantityInBaseUnit            *float32 `json:"MaximumStockQuantityInBaseUnit"`
 	MinimumDeliveryQuantityInBaseUnit         *float32 `json:"MinimumDeliveryQuantityInBaseUnit"`
 	MinimumDeliveryLotSizeQuantityInBaseUnit  *float32 `json:"MinimumDeliveryLotSizeQuantityInBaseUnit"`
@@ -165,6 +166,8 @@ type DeliveryPlantRelationProduct struct {
 	MaximumDeliveryLotSizeQuantityInBaseUnit  *float32 `json:"MaximumDeliveryLotSizeQuantityInBaseUnit"`
 	MaximumDeliveryQuantityInBaseUnit         *float32 `json:"MaximumDeliveryQuantityInBaseUnit"`
 	DeliveryLotSizeIsFixed                    *bool    `json:"DeliveryLotSizeIsFixed"`
+	StandardDeliveryDuration                  *float32 `json:"StandardDeliveryDuration"`
+	StandardDeliveryDurationUnit              *string  `json:"StandardDeliveryDurationUnit"`
 	StandardDeliveryDurationInDays            *int     `json:"StandardDeliveryDurationInDays"`
 	IsAutoOrderCreationAllowed                *bool    `json:"IsAutoOrderCreationAllowed"`
 	IsOrderAcknowledgementRequired            *bool    `json:"IsOrderAcknowledgementRequired"`
@@ -195,7 +198,8 @@ type DeliveryPlantRelationProductMRPArea struct {
 	PlanningTimeFence                         *int     `json:"PlanningTimeFence"`
 	MRPPlanningCalendar                       *string  `json:"MRPPlanningCalendar"`
 	SafetyStockQuantityInBaseUnit             *float32 `json:"SafetyStockQuantityInBaseUnit"`
-	SafetyDuration                            *int     `json:"SafetyDuration"`
+	SafetyDuration                            *float32 `json:"SafetyDuration"`
+	SafetyDurationUnit                        *string  `json:"SafetyDurationUnit"`
 	MaximumStockQuantityInBaseUnit            *float32 `json:"MaximumStockQuantityInBaseUnit"`
 	MinimumDeliveryQuantityInBaseUnit         *float32 `json:"MinimumDeliveryQuantityInBaseUnit"`
 	MinimumDeliveryLotSizeQuantityInBaseUnit  *float32 `json:"MinimumDeliveryLotSizeQuantityInBaseUnit"`
@@ -204,6 +208,8 @@ type DeliveryPlantRelationProductMRPArea struct {
 	MaximumDeliveryLotSizeQuantityInBaseUnit  *float32 `json:"MaximumDeliveryLotSizeQuantityInBaseUnit"`
 	MaximumDeliveryQuantityInBaseUnit         *float32 `json:"MaximumDeliveryQuantityInBaseUnit"`
 	DeliveryLotSizeIsFixed                    *bool    `json:"DeliveryLotSizeIsFixed"`
+	StandardDeliveryDuration                  *float32 `json:"StandardDeliveryDuration"`
+	StandardDeliveryDurationUnit              *string  `json:"StandardDeliveryDurationUnit"`
 	StandardDeliveryDurationInDays            *int     `json:"StandardDeliveryDurationInDays"`
 	IsAutoOrderCreationAllowed                *bool    `json:"IsAutoOrderCreationAllowed"`
 	IsOrderAcknowledgementRequired            *bool    `json:"IsOrderAcknowledgementRequired"`

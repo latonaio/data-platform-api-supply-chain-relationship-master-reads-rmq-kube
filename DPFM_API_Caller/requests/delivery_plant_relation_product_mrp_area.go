@@ -22,7 +22,7 @@ type DeliveryPlantRelationProductMRPArea struct {
 	PlanningTimeFence                         *int     `json:"PlanningTimeFence"`
 	MRPPlanningCalendar                       *string  `json:"MRPPlanningCalendar"`
 	SafetyStockQuantityInBaseUnit             *float32 `json:"SafetyStockQuantityInBaseUnit"`
-	SafetyDuration                            *int     `json:"SafetyDuration"`
+	SafetyDuration                            *float32 `json:"SafetyDuration"`
 	MaximumStockQuantityInBaseUnit            *float32 `json:"MaximumStockQuantityInBaseUnit"`
 	MinimumDeliveryQuantityInBaseUnit         *float32 `json:"MinimumDeliveryQuantityInBaseUnit"`
 	MinimumDeliveryLotSizeQuantityInBaseUnit  *float32 `json:"MinimumDeliveryLotSizeQuantityInBaseUnit"`

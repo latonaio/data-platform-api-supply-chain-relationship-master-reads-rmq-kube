@@ -346,7 +346,7 @@ func ConvertToDeliveryPlantRelationProduct(rows *sql.Rows) (*[]DeliveryPlantRela
 			&pm.Buyer,
 			&pm.Seller,
 			&pm.DeliverToParty,
-			&pm.DeliverFromToParty,
+			&pm.DeliverFromParty,
 			&pm.DeliverToPlant,
 			&pm.DeliverFromPlant,
 			&pm.Product,
@@ -356,22 +356,23 @@ func ConvertToDeliveryPlantRelationProduct(rows *sql.Rows) (*[]DeliveryPlantRela
 			&pm.QuantityPerPackage,
 			&pm.MRPType,
 			&pm.MRPController,
-			&pm.ReorderThresholdQuantity,
-			&pm.PlanningTimeFence,
+			&pm.ReorderThresholdQuantityInBaseUnit,
+			&pm.PlanningTimeFenceInDays,
 			&pm.MRPPlanningCalendar,
 			&pm.SafetyStockQuantityInBaseUnit,
 			&pm.SafetyDuration,
+			&pm.SafetyDurationUnit,
 			&pm.MaximumStockQuantityInBaseUnit,
 			&pm.MinimumDeliveryQuantityInBaseUnit,
 			&pm.MinimumDeliveryLotSizeQuantityInBaseUnit,
+			&pm.StandardDeliveryQuantityInBaseUnit,
 			&pm.StandardDeliveryLotSizeQuantityInBaseUnit,
-			&pm.DeliveryLotSizeRoundingQuantityInBaseUnit,
-			&pm.MaximumDeliveryLotSizeQuantityInBaseUnit,
 			&pm.MaximumDeliveryQuantityInBaseUnit,
+			&pm.MaximumDeliveryLotSizeQuantityInBaseUnit,
+			&pm.DeliveryLotSizeRoundingQuantityInBaseUnit,
 			&pm.DeliveryLotSizeIsFixed,
-			&pm.StandardDeliveryDurationInDays,
-			&pm.IsAutoOrderCreationAllowed,
-			&pm.IsOrderAcknowledgementRequired,
+			&pm.StandardDeliveryDuration,
+			&pm.StandardDeliveryDurationUnit,
 			&pm.CreationDate,
 			&pm.LastChangeDate,
 			&pm.IsMarkedForDeletion,
@@ -389,7 +390,7 @@ func ConvertToDeliveryPlantRelationProduct(rows *sql.Rows) (*[]DeliveryPlantRela
 			Buyer:                                     data.Buyer,
 			Seller:                                    data.Seller,
 			DeliverToParty:                            data.DeliverToParty,
-			DeliverFromToParty:                        data.DeliverFromToParty,
+			DeliverFromParty:                          data.DeliverFromParty,
 			DeliverToPlant:                            data.DeliverToPlant,
 			DeliverFromPlant:                          data.DeliverFromPlant,
 			Product:                                   data.Product,
@@ -399,22 +400,23 @@ func ConvertToDeliveryPlantRelationProduct(rows *sql.Rows) (*[]DeliveryPlantRela
 			QuantityPerPackage:                        data.QuantityPerPackage,
 			MRPType:                                   data.MRPType,
 			MRPController:                             data.MRPController,
-			ReorderThresholdQuantity:                  data.ReorderThresholdQuantity,
-			PlanningTimeFence:                         data.PlanningTimeFence,
+			ReorderThresholdQuantityInBaseUnit:        data.ReorderThresholdQuantityInBaseUnit,
+			PlanningTimeFenceInDays:                   data.PlanningTimeFenceInDays,
 			MRPPlanningCalendar:                       data.MRPPlanningCalendar,
 			SafetyStockQuantityInBaseUnit:             data.SafetyStockQuantityInBaseUnit,
 			SafetyDuration:                            data.SafetyDuration,
+			SafetyDurationUnit:                        data.SafetyDurationUnit,
 			MaximumStockQuantityInBaseUnit:            data.MaximumStockQuantityInBaseUnit,
 			MinimumDeliveryQuantityInBaseUnit:         data.MinimumDeliveryQuantityInBaseUnit,
 			MinimumDeliveryLotSizeQuantityInBaseUnit:  data.MinimumDeliveryLotSizeQuantityInBaseUnit,
+			StandardDeliveryQuantityInBaseUnit:        data.StandardDeliveryQuantityInBaseUnit,
 			StandardDeliveryLotSizeQuantityInBaseUnit: data.StandardDeliveryLotSizeQuantityInBaseUnit,
-			DeliveryLotSizeRoundingQuantityInBaseUnit: data.DeliveryLotSizeRoundingQuantityInBaseUnit,
-			MaximumDeliveryLotSizeQuantityInBaseUnit:  data.MaximumDeliveryLotSizeQuantityInBaseUnit,
 			MaximumDeliveryQuantityInBaseUnit:         data.MaximumDeliveryQuantityInBaseUnit,
+			MaximumDeliveryLotSizeQuantityInBaseUnit:  data.MaximumDeliveryLotSizeQuantityInBaseUnit,
+			DeliveryLotSizeRoundingQuantityInBaseUnit: data.DeliveryLotSizeRoundingQuantityInBaseUnit,
 			DeliveryLotSizeIsFixed:                    data.DeliveryLotSizeIsFixed,
-			StandardDeliveryDurationInDays:            data.StandardDeliveryDurationInDays,
-			IsAutoOrderCreationAllowed:                data.IsAutoOrderCreationAllowed,
-			IsOrderAcknowledgementRequired:            data.IsOrderAcknowledgementRequired,
+			StandardDeliveryDuration:                  data.StandardDeliveryDuration,
+			StandardDeliveryDurationUnit:              data.StandardDeliveryDurationUnit,
 			CreationDate:                              data.CreationDate,
 			LastChangeDate:                            data.LastChangeDate,
 			IsMarkedForDeletion:                       data.IsMarkedForDeletion,
@@ -448,29 +450,30 @@ func ConvertToDeliveryPlantRelationProductMRPArea(rows *sql.Rows) (*[]DeliveryPl
 			&pm.DeliverToPlant,
 			&pm.DeliverFromPlant,
 			&pm.Product,
+			&pm.MRPArea,
 			&pm.DeliverToPlantStorageLocation,
 			&pm.DeliverFromPlantStorageLocation,
 			&pm.DeliveryUnit,
 			&pm.QuantityPerPackage,
 			&pm.MRPType,
-			&pm.MRPArea,
 			&pm.MRPController,
-			&pm.ReorderThresholdQuantity,
-			&pm.PlanningTimeFence,
+			&pm.ReorderThresholdQuantityInBaseUnit,
+			&pm.PlanningTimeFenceInDays,
 			&pm.MRPPlanningCalendar,
 			&pm.SafetyStockQuantityInBaseUnit,
 			&pm.SafetyDuration,
+			&pm.SafetyDurationUnit,
 			&pm.MaximumStockQuantityInBaseUnit,
 			&pm.MinimumDeliveryQuantityInBaseUnit,
 			&pm.MinimumDeliveryLotSizeQuantityInBaseUnit,
+			&pm.StandardDeliveryQuantityInBaseUnit,
 			&pm.StandardDeliveryLotSizeQuantityInBaseUnit,
-			&pm.DeliveryLotSizeRoundingQuantityInBaseUnit,
-			&pm.MaximumDeliveryLotSizeQuantityInBaseUnit,
 			&pm.MaximumDeliveryQuantityInBaseUnit,
+			&pm.MaximumDeliveryLotSizeQuantityInBaseUnit,
+			&pm.DeliveryLotSizeRoundingQuantityInBaseUnit,
 			&pm.DeliveryLotSizeIsFixed,
-			&pm.StandardDeliveryDurationInDays,
-			&pm.IsAutoOrderCreationAllowed,
-			&pm.IsOrderAcknowledgementRequired,
+			&pm.StandardDeliveryDuration,
+			&pm.StandardDeliveryDurationUnit,
 			&pm.CreationDate,
 			&pm.LastChangeDate,
 			&pm.IsMarkedForDeletion,
@@ -492,29 +495,30 @@ func ConvertToDeliveryPlantRelationProductMRPArea(rows *sql.Rows) (*[]DeliveryPl
 			DeliverToPlant:                            data.DeliverToPlant,
 			DeliverFromPlant:                          data.DeliverFromPlant,
 			Product:                                   data.Product,
+			MRPArea:                                   data.MRPArea,
 			DeliverToPlantStorageLocation:             data.DeliverToPlantStorageLocation,
 			DeliverFromPlantStorageLocation:           data.DeliverFromPlantStorageLocation,
 			DeliveryUnit:                              data.DeliveryUnit,
 			QuantityPerPackage:                        data.QuantityPerPackage,
 			MRPType:                                   data.MRPType,
-			MRPArea:                                   data.MRPArea,
 			MRPController:                             data.MRPController,
-			ReorderThresholdQuantity:                  data.ReorderThresholdQuantity,
-			PlanningTimeFence:                         data.PlanningTimeFence,
+			ReorderThresholdQuantityInBaseUnit:        data.ReorderThresholdQuantityInBaseUnit,
+			PlanningTimeFenceInDays:                   data.PlanningTimeFenceInDays,
 			MRPPlanningCalendar:                       data.MRPPlanningCalendar,
 			SafetyStockQuantityInBaseUnit:             data.SafetyStockQuantityInBaseUnit,
 			SafetyDuration:                            data.SafetyDuration,
+			SafetyDurationUnit:                        data.SafetyDurationUnit,
 			MaximumStockQuantityInBaseUnit:            data.MaximumStockQuantityInBaseUnit,
 			MinimumDeliveryQuantityInBaseUnit:         data.MinimumDeliveryQuantityInBaseUnit,
 			MinimumDeliveryLotSizeQuantityInBaseUnit:  data.MinimumDeliveryLotSizeQuantityInBaseUnit,
+			StandardDeliveryQuantityInBaseUnit:        data.StandardDeliveryQuantityInBaseUnit,
 			StandardDeliveryLotSizeQuantityInBaseUnit: data.StandardDeliveryLotSizeQuantityInBaseUnit,
-			DeliveryLotSizeRoundingQuantityInBaseUnit: data.DeliveryLotSizeRoundingQuantityInBaseUnit,
-			MaximumDeliveryLotSizeQuantityInBaseUnit:  data.MaximumDeliveryLotSizeQuantityInBaseUnit,
 			MaximumDeliveryQuantityInBaseUnit:         data.MaximumDeliveryQuantityInBaseUnit,
+			MaximumDeliveryLotSizeQuantityInBaseUnit:  data.MaximumDeliveryLotSizeQuantityInBaseUnit,
+			DeliveryLotSizeRoundingQuantityInBaseUnit: data.DeliveryLotSizeRoundingQuantityInBaseUnit,
 			DeliveryLotSizeIsFixed:                    data.DeliveryLotSizeIsFixed,
-			StandardDeliveryDurationInDays:            data.StandardDeliveryDurationInDays,
-			IsAutoOrderCreationAllowed:                data.IsAutoOrderCreationAllowed,
-			IsOrderAcknowledgementRequired:            data.IsOrderAcknowledgementRequired,
+			StandardDeliveryDuration:                  data.StandardDeliveryDuration,
+			StandardDeliveryDurationUnit:              data.StandardDeliveryDurationUnit,
 			CreationDate:                              data.CreationDate,
 			LastChangeDate:                            data.LastChangeDate,
 			IsMarkedForDeletion:                       data.IsMarkedForDeletion,
@@ -736,4 +740,235 @@ func ConvertToProductionPlantRelationProductMRP(rows *sql.Rows) (*[]ProductionPl
 	}
 
 	return &productionPlantRelationProductMRP, nil
+}
+
+func ConvertToFreightRelation(rows *sql.Rows) (*[]FreightRelation, error) {
+	defer rows.Close()
+	freightRelation := make([]FreightRelation, 0)
+
+	i := 0
+	for rows.Next() {
+		i++
+		pm := &requests.FreightRelation{}
+
+		err := rows.Scan(
+			&pm.SupplyChainRelationshipID,
+			&pm.Buyer,
+			&pm.Seller,
+			&pm.FreightPartner,
+			&pm.CreationDate,
+			&pm.LastChangeDate,
+			&pm.IsMarkedForDeletion,
+		)
+		if err != nil {
+			fmt.Printf("err = %+v \n", err)
+			return &freightRelation, err
+		}
+
+		data := pm
+		freightRelation = append(freightRelation, FreightRelation{
+			SupplyChainRelationshipID: data.SupplyChainRelationshipID,
+			Buyer:                     data.Buyer,
+			Seller:                    data.Seller,
+			CreationDate:              data.CreationDate,
+			LastChangeDate:            data.LastChangeDate,
+			IsMarkedForDeletion:       data.IsMarkedForDeletion,
+		})
+	}
+	if i == 0 {
+		fmt.Printf("DBに対象のレコードが存在しません。")
+		return &freightRelation, nil
+	}
+
+	return &freightRelation, nil
+}
+
+func ConvertToFreightTransaction(rows *sql.Rows) (*[]FreightTransaction, error) {
+	defer rows.Close()
+	freightTransaction := make([]FreightTransaction, 0)
+
+	i := 0
+	for rows.Next() {
+		i++
+		pm := &requests.FreightTransaction{}
+
+		err := rows.Scan(
+			&pm.SupplyChainRelationshipID,
+			&pm.SupplyChainRelationshipFreightID,
+			&pm.Buyer,
+			&pm.Seller,
+			&pm.FreightPartner,
+			&pm.TransactionCurrency,
+			&pm.PaymentTerms,
+			&pm.PaymentMethod,
+			&pm.Incoterms,
+			&pm.AccountAssignmentGroup,
+			&pm.CreationDate,
+			&pm.LastChangeDate,
+			&pm.QuotationIsBlocked,
+			&pm.OrderIsBlocked,
+			&pm.DeliveryIsBlocked,
+			&pm.BillingIsBlocked,
+			&pm.IsMarkedForDeletion,
+		)
+		if err != nil {
+			fmt.Printf("err = %+v \n", err)
+			return &freightTransaction, err
+		}
+
+		data := pm
+		freightTransaction = append(freightTransaction, FreightTransaction{
+			SupplyChainRelationshipID:        data.SupplyChainRelationshipID,
+			SupplyChainRelationshipFreightID: data.SupplyChainRelationshipFreightID,
+			Buyer:                            data.Buyer,
+			Seller:                           data.Seller,
+			FreightPartner:                   data.FreightPartner,
+			TransactionCurrency:              data.TransactionCurrency,
+			PaymentTerms:                     data.PaymentTerms,
+			PaymentMethod:                    data.PaymentMethod,
+			Incoterms:                        data.Incoterms,
+			AccountAssignmentGroup:           data.AccountAssignmentGroup,
+			CreationDate:                     data.CreationDate,
+			LastChangeDate:                   data.LastChangeDate,
+			QuotationIsBlocked:               data.QuotationIsBlocked,
+			OrderIsBlocked:                   data.OrderIsBlocked,
+			DeliveryIsBlocked:                data.DeliveryIsBlocked,
+			BillingIsBlocked:                 data.BillingIsBlocked,
+			IsMarkedForDeletion:              data.IsMarkedForDeletion,
+		})
+	}
+	if i == 0 {
+		fmt.Printf("DBに対象のレコードが存在しません。")
+		return &freightTransaction, nil
+	}
+
+	return &freightTransaction, nil
+}
+
+func ConvertToFreightBillingRelation(rows *sql.Rows) (*[]FreightBillingRelation, error) {
+	defer rows.Close()
+	freightBillingRelation := make([]FreightBillingRelation, 0)
+
+	i := 0
+	for rows.Next() {
+		i++
+		pm := &requests.FreightBillingRelation{}
+
+		err := rows.Scan(
+			&pm.SupplyChainRelationshipID,
+			&pm.SupplyChainRelationshipFreightID,
+			&pm.SupplyChainRelationshipFreightBillingID,
+			&pm.Buyer,
+			&pm.Seller,
+			&pm.FreightPartner,
+			&pm.FreightBillToParty,
+			&pm.FreightBillFromParty,
+			&pm.DefaultRelation,
+			&pm.FreightBillToCountry,
+			&pm.FreightBillFromCountry,
+			&pm.IsExportImport,
+			&pm.TransactionTaxCategory,
+			&pm.TransactionTaxClassification,
+			&pm.CreationDate,
+			&pm.LastChangeDate,
+			&pm.IsMarkedForDeletion,
+		)
+		if err != nil {
+			fmt.Printf("err = %+v \n", err)
+			return &freightBillingRelation, err
+		}
+
+		data := pm
+		freightBillingRelation = append(freightBillingRelation, FreightBillingRelation{
+			SupplyChainRelationshipID:               data.SupplyChainRelationshipID,
+			SupplyChainRelationshipFreightID:        data.SupplyChainRelationshipFreightID,
+			SupplyChainRelationshipFreightBillingID: data.SupplyChainRelationshipFreightBillingID,
+			Buyer:                                   data.Buyer,
+			Seller:                                  data.Seller,
+			FreightPartner:                          data.FreightPartner,
+			FreightBillToParty:                      data.FreightBillToParty,
+			FreightBillFromParty:                    data.FreightBillFromParty,
+			DefaultRelation:                         data.DefaultRelation,
+			FreightBillToCountry:                    data.FreightBillToCountry,
+			FreightBillFromCountry:                  data.FreightBillFromCountry,
+			IsExportImport:                          data.IsExportImport,
+			TransactionTaxCategory:                  data.TransactionTaxCategory,
+			TransactionTaxClassification:            data.TransactionTaxClassification,
+			CreationDate:                            data.CreationDate,
+			LastChangeDate:                          data.LastChangeDate,
+			IsMarkedForDeletion:                     data.IsMarkedForDeletion,
+		})
+	}
+	if i == 0 {
+		fmt.Printf("DBに対象のレコードが存在しません。")
+		return &freightBillingRelation, nil
+	}
+
+	return &freightBillingRelation, nil
+}
+
+func ConvertToFreightPaymentRelation(rows *sql.Rows) (*[]FreightPaymentRelation, error) {
+	defer rows.Close()
+	freightPaymentRelation := make([]FreightPaymentRelation, 0)
+
+	i := 0
+	for rows.Next() {
+		i++
+		pm := &requests.FreightPaymentRelation{}
+
+		err := rows.Scan(
+			&pm.SupplyChainRelationshipID,
+			&pm.SupplyChainRelationshipFreightID,
+			&pm.SupplyChainRelationshipFreightBillingID,
+			&pm.SupplyChainRelationshipFreightPaymentID,
+			&pm.Buyer,
+			&pm.Seller,
+			&pm.FreightPartner,
+			&pm.FreightBillToParty,
+			&pm.FreightBillFromParty,
+			&pm.FreightPayer,
+			&pm.FreightPayee,
+			&pm.DefaultRelation,
+			&pm.PayerHouseBank,
+			&pm.PayerHouseBankAccount,
+			&pm.PayeeHouseBank,
+			&pm.PayeeHouseBankAccount,
+			&pm.CreationDate,
+			&pm.LastChangeDate,
+			&pm.IsMarkedForDeletion,
+		)
+		if err != nil {
+			fmt.Printf("err = %+v \n", err)
+			return &freightPaymentRelation, err
+		}
+
+		data := pm
+		freightPaymentRelation = append(freightPaymentRelation, FreightPaymentRelation{
+			SupplyChainRelationshipID:               data.SupplyChainRelationshipID,
+			SupplyChainRelationshipFreightID:        data.SupplyChainRelationshipFreightID,
+			SupplyChainRelationshipFreightBillingID: data.SupplyChainRelationshipFreightBillingID,
+			SupplyChainRelationshipFreightPaymentID: data.SupplyChainRelationshipFreightPaymentID,
+			Buyer:                                   data.Buyer,
+			Seller:                                  data.Seller,
+			FreightPartner:                          data.FreightPartner,
+			FreightBillToParty:                      data.FreightBillToParty,
+			FreightBillFromParty:                    data.FreightBillFromParty,
+			FreightPayer:                            data.FreightPayer,
+			FreightPayee:                            data.FreightPayee,
+			DefaultRelation:                         data.DefaultRelation,
+			PayerHouseBank:                          data.PayerHouseBank,
+			PayerHouseBankAccount:                   data.PayerHouseBankAccount,
+			PayeeHouseBank:                          data.PayeeHouseBank,
+			PayeeHouseBankAccount:                   data.PayeeHouseBankAccount,
+			CreationDate:                            data.CreationDate,
+			LastChangeDate:                          data.LastChangeDate,
+			IsMarkedForDeletion:                     data.IsMarkedForDeletion,
+		})
+	}
+	if i == 0 {
+		fmt.Printf("DBに対象のレコードが存在しません。")
+		return &freightPaymentRelation, nil
+	}
+
+	return &freightPaymentRelation, nil
 }

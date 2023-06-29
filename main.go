@@ -117,6 +117,7 @@ func getAccepter(input *dpfm_api_input_reader.SDC) []string {
 			"DeliveryPlantRelation", "DeliveryPlantRelationProduct", "DeliveryPlantRelationProductMRPArea",
 			"StockConfPlantRelation", "StockConfPlantRelationProduct",
 			"ProductionPlantRelation", "ProductionPlantRelationProductMRP",
+			"FreightRelation", "FreightTransaction", "FreightBillingRelation", "FreightPaymentRelation",
 		}
 	}
 	return accepter

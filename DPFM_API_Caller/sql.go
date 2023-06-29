@@ -32,6 +32,10 @@ func (c *DPFMAPICaller) readSqlProcess(
 	var stockConfPlantRelationProduct *[]dpfm_api_output_formatter.StockConfPlantRelationProduct
 	var productionPlantRelation *[]dpfm_api_output_formatter.ProductionPlantRelation
 	var productionPlantRelationProductMRP *[]dpfm_api_output_formatter.ProductionPlantRelationProductMRP
+	var freightRelation *[]dpfm_api_output_formatter.FreightRelation
+	var freightTransaction *[]dpfm_api_output_formatter.FreightTransaction
+	var freightBillingRelation *[]dpfm_api_output_formatter.FreightBillingRelation
+	var freightPaymentRelation *[]dpfm_api_output_formatter.FreightPaymentRelation
 	for _, fn := range accepter {
 		switch fn {
 		case "General":
@@ -94,6 +98,22 @@ func (c *DPFMAPICaller) readSqlProcess(
 			func() {
 				productionPlantRelationProductMRP = c.ProductionPlantRelationProductMRP(mtx, input, output, errs, log)
 			}()
+		case "FreightRelation":
+			func() {
+				freightRelation = c.FreightRelation(mtx, input, output, errs, log)
+			}()
+		case "FreightTransaction":
+			func() {
+				freightTransaction = c.FreightTransaction(mtx, input, output, errs, log)
+			}()
+		case "FreightBillingRelation":
+			func() {
+				freightBillingRelation = c.FreightBillingRelation(mtx, input, output, errs, log)
+			}()
+		case "FreightPaymentRelation":
+			func() {
+				freightPaymentRelation = c.FreightPaymentRelation(mtx, input, output, errs, log)
+			}()
 		default:
 		}
 	}
@@ -111,6 +131,10 @@ func (c *DPFMAPICaller) readSqlProcess(
 		StockConfPlantRelationProduct:       stockConfPlantRelationProduct,
 		ProductionPlantRelation:             productionPlantRelation,
 		ProductionPlantRelationProductMRP:   productionPlantRelationProductMRP,
+		FreightRelation:                     freightRelation,
+		FreightTransaction:                  freightTransaction,
+		FreightBillingRelation:              freightBillingRelation,
+		FreightPaymentRelation:              freightPaymentRelation,
 	}
 
 	return data
@@ -695,6 +719,170 @@ func (c *DPFMAPICaller) ProductionPlantRelationProductMRP(
 	defer rows.Close()
 
 	data, err := dpfm_api_output_formatter.ConvertToProductionPlantRelationProductMRP(rows)
+
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+
+	return data
+}
+
+func (c *DPFMAPICaller) FreightRelation(
+	mtx *sync.Mutex,
+	input *dpfm_api_input_reader.SDC,
+	output *dpfm_api_output_formatter.SDC,
+	errs *[]error,
+	log *logger.Logger,
+) *[]dpfm_api_output_formatter.FreightRelation {
+	var args []interface{}
+	supplyChainRelationshipID := input.General.SupplyChainRelationshipID
+	buyer := input.General.Buyer
+	seller := input.General.Seller
+	freightRelation := input.General.FreightRelation
+	cnt := 0
+	for _, v := range freightRelation {
+		args = append(args, supplyChainRelationshipID, v.SupplyChainRelationshipFreightID, buyer, seller, v.FreightPartner)
+		cnt++
+	}
+	repeat := strings.Repeat("(?,?,?,?,?),", cnt-1) + "(?,?,?,?,?)"
+
+	rows, err := c.db.Query(
+		`SELECT *
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_scr_freight_relation_data
+		WHERE (SupplyChainRelationshipID, SupplyChainRelationshipProductionFreightID, Buyer, Seller, FreightPartner) IN ( `+repeat+` );`, args...,
+	)
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+	defer rows.Close()
+
+	data, err := dpfm_api_output_formatter.ConvertToFreightRelation(rows)
+
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+
+	return data
+}
+
+func (c *DPFMAPICaller) FreightTransaction(
+	mtx *sync.Mutex,
+	input *dpfm_api_input_reader.SDC,
+	output *dpfm_api_output_formatter.SDC,
+	errs *[]error,
+	log *logger.Logger,
+) *[]dpfm_api_output_formatter.FreightTransaction {
+	var args []interface{}
+	freightRelation := input.General.FreightRelation
+	cnt := 0
+	for _, v := range freightRelation {
+		args = append(args, v.SupplyChainRelationshipID, v.SupplyChainRelationshipFreightID, v.Buyer, v.Seller, v.FreightPartner)
+		cnt++
+	}
+	repeat := strings.Repeat("(?,?,?,?,?),", cnt-1) + "(?,?,?,?,?)"
+
+	rows, err := c.db.Query(
+		`SELECT *
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_scr_freight_transaction_data
+		WHERE (SupplyChainRelationshipID, SupplyChainRelationshipProductionFreightID, Buyer, Seller, FreightPartner) IN ( `+repeat+` );`, args...,
+	)
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+	defer rows.Close()
+
+	data, err := dpfm_api_output_formatter.ConvertToFreightTransaction(rows)
+
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+
+	return data
+}
+
+func (c *DPFMAPICaller) FreightBillingRelation(
+	mtx *sync.Mutex,
+	input *dpfm_api_input_reader.SDC,
+	output *dpfm_api_output_formatter.SDC,
+	errs *[]error,
+	log *logger.Logger,
+) *[]dpfm_api_output_formatter.FreightBillingRelation {
+	var args []interface{}
+	supplyChainRelationshipID := input.General.SupplyChainRelationshipID
+	freightRelation := input.General.FreightRelation
+	cnt := 0
+	for _, v := range freightRelation {
+		freightBillingReration := v.FreightBillingRelation
+		for _, w := range freightBillingReration {
+			args = append(args, supplyChainRelationshipID, v.SupplyChainRelationshipFreightID, w.SupplyChainRelationshipFreightBillingID, v.Buyer, v.Seller, v.FreightPartner, w.FreightBillToParty, w.FreightBillFromParty)
+		}
+		cnt++
+	}
+	repeat := strings.Repeat("(?,?,?,?,?,?,?,?),", cnt-1) + "(?,?,?,?,?,?,?,?)"
+
+	rows, err := c.db.Query(
+		`SELECT *
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_scr_freight_billing_relation_data
+		WHERE (SupplyChainRelationshipID, SupplyChainRelationshipProductionFreightID, SupplyChainRelationshipFreightBillingID, Buyer, Seller, FreightPartner, FreightBillToParty, FreightBillFromParty) IN ( `+repeat+` );`, args...,
+	)
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+	defer rows.Close()
+
+	data, err := dpfm_api_output_formatter.ConvertToFreightBillingRelation(rows)
+
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+
+	return data
+}
+
+func (c *DPFMAPICaller) FreightPaymentRelation(
+	mtx *sync.Mutex,
+	input *dpfm_api_input_reader.SDC,
+	output *dpfm_api_output_formatter.SDC,
+	errs *[]error,
+	log *logger.Logger,
+) *[]dpfm_api_output_formatter.FreightPaymentRelation {
+	var args []interface{}
+	buyer := input.General.Buyer
+	seller := input.General.Seller
+	freightRelation := input.General.FreightRelation
+	cnt := 0
+	for _, v := range freightRelation {
+		freightBillingReration := v.FreightBillingRelation
+		for _, w := range freightBillingReration {
+			freightPaymentReration := w.FreightPaymentRelation
+			for _, x := range freightPaymentReration {
+				args = append(args, w.SupplyChainRelationshipID, w.SupplyChainRelationshipFreightID, w.SupplyChainRelationshipFreightBillingID,
+					x.SupplyChainRelationshipFreightPaymentID, w.Buyer, w.Seller, w.FreightPartner, w.FreightBillToParty, w.FreightBillFromParty, buyer, seller)
+			}
+		}
+		cnt++
+	}
+	repeat := strings.Repeat("(?,?,?,?,?,?,?,?,?,?,?),", cnt-1) + "(?,?,?,?,?,?,?,?,?,?,?)"
+
+	rows, err := c.db.Query(
+		`SELECT *
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_scr_freight_billing_relation_data
+		WHERE (SupplyChainRelationshipID, SupplyChainRelationshipFreightID, SupplyChainRelationshipFreightBillingID, SupplyChainRelationshipFreightPaymentID, Buyer, Seller, FreightPartner, FreightBillToParty, FreightBillFromParty, FreightPayer, FreightPayee) IN ( `+repeat+` );`, args...,
+	)
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+	defer rows.Close()
+
+	data, err := dpfm_api_output_formatter.ConvertToFreightPaymentRelation(rows)
 
 	if err != nil {
 		*errs = append(*errs, err)

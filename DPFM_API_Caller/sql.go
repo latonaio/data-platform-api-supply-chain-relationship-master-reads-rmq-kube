@@ -50,6 +50,10 @@ func (c *DPFMAPICaller) readSqlProcess(
 			func() {
 				transaction = c.Transaction(mtx, input, output, errs, log)
 			}()
+		case "TransactionBySCRID":
+			func() {
+				transaction = c.TransactionBySCRID(mtx, input, output, errs, log)
+			}()
 		case "DeliveryRelation":
 			func() {
 				deliveryRelation = c.DeliveryRelation(mtx, input, output, errs, log)
@@ -58,11 +62,23 @@ func (c *DPFMAPICaller) readSqlProcess(
 			func() {
 				deliveryRelation = c.DeliveryRelations(mtx, input, output, errs, log)
 			}()
+		case "DeliveryRelationsBySCRID":
+			func() {
+				deliveryRelation = c.DeliveryRelationsBySCRID(mtx, input, output, errs, log)
+			}()
 		case "BillingRelation":
 			func() {
 				billingRelation = c.BillingRelation(mtx, input, output, errs, log)
 			}()
+		case "BillingRelationBySCRID":
+			func() {
+				billingRelation = c.BillingRelationBySCRID(mtx, input, output, errs, log)
+			}()
 		case "PaymentRelation":
+			func() {
+				paymentRelation = c.PaymentRelation(mtx, input, output, errs, log)
+			}()
+		case "PaymentRelationBySCRID":
 			func() {
 				paymentRelation = c.PaymentRelation(mtx, input, output, errs, log)
 			}()
@@ -73,6 +89,10 @@ func (c *DPFMAPICaller) readSqlProcess(
 		case "DeliveryPlantRelations":
 			func() {
 				deliveryPlantRelation = c.DeliveryPlantRelations(mtx, input, output, errs, log)
+			}()
+		case "DeliveryPlantRelationsBySCRID":
+			func() {
+				deliveryPlantRelation = c.DeliveryPlantRelationsBySCRID(mtx, input, output, errs, log)
 			}()
 		case "DeliveryPlantRelationProduct":
 			func() {
@@ -153,7 +173,7 @@ func (c *DPFMAPICaller) General(
 
 	rows, err := c.db.Query(
 		`SELECT *
-		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_supply_chain_relationship_general_data
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_scr_general_data
 		WHERE (SupplyChainRelationshipID, Buyer, Seller) = (?,?,?);`, supplyChainRelationshipID, buyer, seller,
 	)
 	if err != nil {
@@ -193,7 +213,7 @@ func (c *DPFMAPICaller) Generals(
 
 	rows, err := c.db.Query(
 		`SELECT *
-		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_supply_chain_relationship_general_data
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_scr_general_data
 		` + where + idWhere + `;`)
 	if err != nil {
 		*errs = append(*errs, err)
@@ -223,7 +243,38 @@ func (c *DPFMAPICaller) Transaction(
 
 	rows, err := c.db.Query(
 		`SELECT *
-		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_supply_chain_relationship_transaction_data
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_scr_transaction_data
+		WHERE (SupplyChainRelationshipID, Buyer, Seller) = (?,?,?);`, supplyChainRelationshipID, buyer, seller,
+	)
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+	defer rows.Close()
+
+	data, err := dpfm_api_output_formatter.ConvertToTransaction(rows)
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+
+	return data
+}
+
+func (c *DPFMAPICaller) TransactionBySCRID(
+	mtx *sync.Mutex,
+	input *dpfm_api_input_reader.SDC,
+	output *dpfm_api_output_formatter.SDC,
+	errs *[]error,
+	log *logger.Logger,
+) *[]dpfm_api_output_formatter.Transaction {
+	supplyChainRelationshipID := input.General.SupplyChainRelationshipID
+	buyer := input.General.Buyer
+	seller := input.General.Seller
+
+	rows, err := c.db.Query(
+		`SELECT *
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_scr_transaction_data
 		WHERE (SupplyChainRelationshipID, Buyer, Seller) = (?,?,?);`, supplyChainRelationshipID, buyer, seller,
 	)
 	if err != nil {
@@ -263,7 +314,7 @@ func (c *DPFMAPICaller) DeliveryRelation(
 
 	rows, err := c.db.Query(
 		`SELECT *
-		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_supply_chain_relationship_delivery_relation_data
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_scr_delivery_relation_data
 		WHERE (SupplyChainRelationshipID, SupplyChainRelationshipDeliveryID, Buyer, Seller, DeliverToParty, DeliverFromParty) IN ( `+repeat+` );`, args...,
 	)
 	if err != nil {
@@ -295,8 +346,47 @@ func (c *DPFMAPICaller) DeliveryRelations(
 
 	rows, err := c.db.Query(
 		`SELECT *
-		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_supply_chain_relationship_delivery_relation_data
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_scr_delivery_relation_data
 		` + where + `;`,
+	)
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+	defer rows.Close()
+
+	data, err := dpfm_api_output_formatter.ConvertToDeliveryRelation(rows)
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+
+	return data
+}
+
+func (c *DPFMAPICaller) DeliveryRelationsBySCRID(
+	mtx *sync.Mutex,
+	input *dpfm_api_input_reader.SDC,
+	output *dpfm_api_output_formatter.SDC,
+	errs *[]error,
+	log *logger.Logger,
+) *[]dpfm_api_output_formatter.DeliveryRelation {
+	supplyChainRelationshipID := input.General.SupplyChainRelationshipID
+	buyer := input.General.Buyer
+	seller := input.General.Seller
+
+	rows, err := c.db.Query(
+		`SELECT d.*,
+       			bBuyer.BusinessPartnerFullName AS BuyerName,
+       			bSeller.BusinessPartnerFullName AS SellerName,
+       			bDeliveryTo.BusinessPartnerFullName AS bDeliveryToPartyName,
+       			bDeliveryFrom.BusinessPartnerFullName AS bDeliveryFromPartyName
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_scr_delivery_relation_data AS d
+		LEFT JOIN data_platform_business_partner_general_data AS bBuyer ON d.Buyer = bBuyer.BusinessPartner
+		LEFT JOIN data_platform_business_partner_general_data AS bSeller ON d.Seller = bSeller.BusinessPartner
+		LEFT JOIN data_platform_business_partner_general_data AS bDeliveryTo ON d.DeliverToParty = bDeliveryTo.BusinessPartner
+		LEFT JOIN data_platform_business_partner_general_data AS bDeliveryFrom ON d.DeliverFromParty = bDeliveryFrom.BusinessPartner
+		WHERE (SupplyChainRelationshipID, Buyer, Seller) = (?,?,?);`, supplyChainRelationshipID, buyer, seller,
 	)
 	if err != nil {
 		*errs = append(*errs, err)
@@ -335,8 +425,39 @@ func (c *DPFMAPICaller) BillingRelation(
 
 	rows, err := c.db.Query(
 		`SELECT *
-		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_supply_chain_relationship_billing_relation_data
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_scr_billing_relation_data
 		WHERE (SupplyChainRelationshipID, supplyChainRelationshipBillingID, Buyer, Seller, BillToParty, BillFromParty) IN ( `+repeat+` );`, args...,
+	)
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+	defer rows.Close()
+
+	data, err := dpfm_api_output_formatter.ConvertToBillingRelation(rows)
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+
+	return data
+}
+
+func (c *DPFMAPICaller) BillingRelationBySCRID(
+	mtx *sync.Mutex,
+	input *dpfm_api_input_reader.SDC,
+	output *dpfm_api_output_formatter.SDC,
+	errs *[]error,
+	log *logger.Logger,
+) *[]dpfm_api_output_formatter.BillingRelation {
+	supplyChainRelationshipID := input.General.SupplyChainRelationshipID
+	buyer := input.General.Buyer
+	seller := input.General.Seller
+
+	rows, err := c.db.Query(
+		`SELECT *
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_scr_billing_relation_data
+		WHERE (SupplyChainRelationshipID, Buyer, Seller) = (?,?,?);`, supplyChainRelationshipID, buyer, seller,
 	)
 	if err != nil {
 		*errs = append(*errs, err)
@@ -378,8 +499,39 @@ func (c *DPFMAPICaller) PaymentRelation(
 
 	rows, err := c.db.Query(
 		`SELECT *
-		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_supply_chain_relationship_payment_relation_data
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_scr_payment_relation_data
 		WHERE (SupplyChainRelationshipID, SupplyChainRelationshipBillingID, SupplyChainRelationshipPaymentID, Buyer, Seller, BillToParty, BillFromParty, Payer, Payee) IN ( `+repeat+` );`, args...,
+	)
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+	defer rows.Close()
+
+	data, err := dpfm_api_output_formatter.ConvertToPaymentRelation(rows)
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+
+	return data
+}
+
+func (c *DPFMAPICaller) PaymentRelationBySCRID(
+	mtx *sync.Mutex,
+	input *dpfm_api_input_reader.SDC,
+	output *dpfm_api_output_formatter.SDC,
+	errs *[]error,
+	log *logger.Logger,
+) *[]dpfm_api_output_formatter.PaymentRelation {
+	supplyChainRelationshipID := input.General.SupplyChainRelationshipID
+	buyer := input.General.Buyer
+	seller := input.General.Seller
+
+	rows, err := c.db.Query(
+		`SELECT *
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_scr_payment_relation_data
+		WHERE (SupplyChainRelationshipID, Buyer, Seller) = (?,?,?);`, supplyChainRelationshipID, buyer, seller,
 	)
 	if err != nil {
 		*errs = append(*errs, err)
@@ -451,8 +603,51 @@ func (c *DPFMAPICaller) DeliveryPlantRelations(
 	}
 	rows, err := c.db.Query(
 		`SELECT *
-		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_supply_chain_relationship_delivery_plant_rel_data
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_scr_delivery_plant_relation_data
 		` + where + `;`,
+	)
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+	defer rows.Close()
+
+	data, err := dpfm_api_output_formatter.ConvertToDeliveryPlantRelation(rows)
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+
+	return data
+}
+
+func (c *DPFMAPICaller) DeliveryPlantRelationsBySCRID(
+	mtx *sync.Mutex,
+	input *dpfm_api_input_reader.SDC,
+	output *dpfm_api_output_formatter.SDC,
+	errs *[]error,
+	log *logger.Logger,
+) *[]dpfm_api_output_formatter.DeliveryPlantRelation {
+	supplyChainRelationshipID := input.General.SupplyChainRelationshipID
+	buyer := input.General.Buyer
+	seller := input.General.Seller
+
+	rows, err := c.db.Query(
+		`SELECT d.*,
+       			bBuyer.BusinessPartnerFullName AS BuyerName,
+       			bSeller.BusinessPartnerFullName AS SellerName,
+       			pDeliveryToPlant.PlantFullName AS DeliveryToPlantName,
+       			pDeliveryFromPlant.PlantFullName AS DeliveryFromPlantName,
+				bDeliveryTo.BusinessPartnerFullName AS DeliveryToPartyName,
+       			bDeliveryFrom.BusinessPartnerFullName AS DeliveryFromPartyName
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_scr_delivery_plant_relation_data AS d
+		LEFT JOIN data_platform_business_partner_general_data AS bBuyer ON d.Buyer = bBuyer.BusinessPartner
+		LEFT JOIN data_platform_business_partner_general_data AS bSeller ON d.Seller = bSeller.BusinessPartner
+		LEFT JOIN data_platform_plant_general_data AS pDeliveryToPlant ON d.DeliverToPlant = pDeliveryToPlant.Plant
+		LEFT JOIN data_platform_plant_general_data AS pDeliveryFromPlant ON d.DeliverFromPlant = pDeliveryFromPlant.Plant
+		LEFT JOIN data_platform_business_partner_general_data AS bDeliveryTo ON d.DeliverToParty = bDeliveryTo.BusinessPartner
+		LEFT JOIN data_platform_business_partner_general_data AS bDeliveryFrom ON d.DeliverFromParty = bDeliveryFrom.BusinessPartner
+		WHERE (SupplyChainRelationshipID, Buyer, Seller) = (?,?,?);`, supplyChainRelationshipID, buyer, seller,
 	)
 	if err != nil {
 		*errs = append(*errs, err)
@@ -495,7 +690,7 @@ func (c *DPFMAPICaller) DeliveryPlantRelationProduct(
 
 	rows, err := c.db.Query(
 		`SELECT *
-		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_supply_chain_relationship_delivery_plant_rel_prod
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_scr_delivery_plant_rel_prod
 		WHERE (SupplyChainRelationshipID, SupplyChainRelationshipDeliveryID, SupplyChainRelationshipDeliveryPlantID, Buyer, Seller, DeliverToParty, DeliverFromParty, DeliverToPlant, DeliverFromPlant, Product) IN ( `+repeat+` );`, args...,
 	)
 	if err != nil {
@@ -541,7 +736,7 @@ func (c *DPFMAPICaller) DeliveryPlantRelationProductMRPArea(
 
 	rows, err := c.db.Query(
 		`SELECT *
-		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_supply_chain_relationship_deliv_plant_rel_prod_mrp
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_scr_deliv_plant_rel_prod_mrp
 		WHERE (SupplyChainRelationshipID, SupplyChainRelationshipDeliveryID, SupplyChainRelationshipDeliveryPlantID, Buyer, Seller, DeliverToParty, DeliverFromParty, DeliverToPlant, DeliverFromPlant, Product, MRPArea) IN ( `+repeat+` );`, args...,
 	)
 	if err != nil {
@@ -581,7 +776,7 @@ func (c *DPFMAPICaller) StockConfPlantRelation(
 
 	rows, err := c.db.Query(
 		`SELECT *
-		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_supply_chain_relationship_stock_conf_plant_rel
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_scr_stock_conf_plant_rel
 		WHERE (SupplyChainRelationshipID, SupplyChainRelationshipStockConfPlantID, Buyer, Seller, StockConfirmationBusinessPartner, StockConfirmationPlant) IN ( `+repeat+` );`, args...,
 	)
 	if err != nil {
@@ -625,7 +820,7 @@ func (c *DPFMAPICaller) StockConfPlantRelationProduct(
 
 	rows, err := c.db.Query(
 		`SELECT *
-		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_supply_chain_relationship_stock_conf_plant_rel_pro
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_scr_stock_conf_plant_rel_pro
 		WHERE (SupplyChainRelationshipID, SupplyChainRelationshipStockConfPlantID, Buyer, Seller, StockConfirmationBusinessPartner, StockConfirmationPlant, Product) IN ( `+repeat+` );`, args...,
 	)
 	if err != nil {
@@ -666,7 +861,7 @@ func (c *DPFMAPICaller) ProductionPlantRelation(
 
 	rows, err := c.db.Query(
 		`SELECT *
-		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_supply_chain_relationship_prod_plant_relation_data
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_scr_prod_plant_relation_data
 		WHERE (SupplyChainRelationshipID, SupplyChainRelationshipProductionPlantID, Buyer, Seller, ProductionPlantBusinessPartner, ProductionPlant) IN ( `+repeat+` );`, args...,
 	)
 	if err != nil {
@@ -709,7 +904,7 @@ func (c *DPFMAPICaller) ProductionPlantRelationProductMRP(
 
 	rows, err := c.db.Query(
 		`SELECT *
-		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_supply_chain_relationship_prod_plant_rel_product
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_scr_prod_plant_rel_product
 		WHERE (SupplyChainRelationshipID, SupplyChainRelationshipProductionPlantID, Buyer, Seller, ProductionPlantBusinessPartner, ProductionPlant, Product) IN ( `+repeat+` );`, args...,
 	)
 	if err != nil {

@@ -111,7 +111,7 @@ func ConvertToDeliveryRelation(rows *sql.Rows) (*[]DeliveryRelation, error) {
 	i := 0
 	for rows.Next() {
 		i++
-		pm := &requests.DeliveryRelation{}
+		pm := DeliveryRelation{}
 
 		err := rows.Scan(
 			&pm.SupplyChainRelationshipID,
@@ -124,6 +124,10 @@ func ConvertToDeliveryRelation(rows *sql.Rows) (*[]DeliveryRelation, error) {
 			&pm.CreationDate,
 			&pm.LastChangeDate,
 			&pm.IsMarkedForDeletion,
+			&pm.BuyerName,
+			&pm.SellerName,
+			&pm.DeliverToPartyName,
+			&pm.DeliverFromPartyName,
 		)
 		if err != nil {
 			fmt.Printf("err = %+v \n", err)
@@ -142,6 +146,10 @@ func ConvertToDeliveryRelation(rows *sql.Rows) (*[]DeliveryRelation, error) {
 			CreationDate:                      data.CreationDate,
 			LastChangeDate:                    data.LastChangeDate,
 			IsMarkedForDeletion:               data.IsMarkedForDeletion,
+			BuyerName:                         data.BuyerName,
+			SellerName:                        data.SellerName,
+			DeliverToPartyName:                data.DeliverToPartyName,
+			DeliverFromPartyName:              data.DeliverFromPartyName,
 		})
 	}
 	if i == 0 {
@@ -279,7 +287,7 @@ func ConvertToDeliveryPlantRelation(rows *sql.Rows) (*[]DeliveryPlantRelation, e
 	i := 0
 	for rows.Next() {
 		i++
-		pm := &requests.DeliveryPlantRelation{}
+		pm := DeliveryPlantRelation{}
 
 		err := rows.Scan(
 			&pm.SupplyChainRelationshipID,
@@ -297,6 +305,12 @@ func ConvertToDeliveryPlantRelation(rows *sql.Rows) (*[]DeliveryPlantRelation, e
 			&pm.CreationDate,
 			&pm.LastChangeDate,
 			&pm.IsMarkedForDeletion,
+			&pm.BuyerName,
+			&pm.SellerName,
+			&pm.DeliverToPartyName,
+			&pm.DeliverFromPartyName,
+			&pm.DeliverToPlantName,
+			&pm.DeliverFromPlantName,
 		)
 		if err != nil {
 			fmt.Printf("err = %+v \n", err)
@@ -320,6 +334,12 @@ func ConvertToDeliveryPlantRelation(rows *sql.Rows) (*[]DeliveryPlantRelation, e
 			CreationDate:                           data.CreationDate,
 			LastChangeDate:                         data.LastChangeDate,
 			IsMarkedForDeletion:                    data.IsMarkedForDeletion,
+			BuyerName:                              data.BuyerName,
+			SellerName:                             data.SellerName,
+			DeliverToPartyName:                     data.DeliverToPartyName,
+			DeliverFromPartyName:                   data.DeliverFromPartyName,
+			DeliverToPlantName:                     data.DeliverToPlantName,
+			DeliverFromPlantName:                   data.DeliverFromPlantName,
 		})
 	}
 	if i == 0 {
